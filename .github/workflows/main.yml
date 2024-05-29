@@ -1,0 +1,28 @@
+on: [push]
+
+jobs:
+  deploy_tailcall:
+    runs-on: ubuntu-latest
+    name: Deploy Tailcall
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Deploy Tailcall
+        id: deploy-tailcall
+        uses: tailcallhq/gh-action@v0.2
+        with:
+          # mandatory
+          provider: '<cloud-provider>' # currently 'aws' and 'fly' are supported
+          tailcall-config: 'config.graphql'
+
+          # when deploying to aws
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+          aws-region: "us-east-1"
+          aws-iam-role: "iam_for_tailcall"
+          terraform-api-token: ${{ secrets.TERRAFORM_API_TOKEN }}
+
+          # when deploying to fly
+          fly-api-token: ${{ secrets.FLY_API_TOKEN }} 
+          fly-app-name: "tailcall"
+          fly-region: "lax"
