@@ -1,0 +1,16 @@
+schema @upstream(baseURL: "http://jsonplaceholder.typicode.com") {
+    query: Query
+}
+
+type Query {
+    user(id: Int!): User @http(path: "/users/{{.args.id}}")
+}
+
+type User {
+    id: Int!
+    name: String!
+    username: String!
+    email: String!
+    phone: String
+    website: String
+}
